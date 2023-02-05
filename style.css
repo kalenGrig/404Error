@@ -1,0 +1,439 @@
+:root {
+  font-size: 62.5%;
+  font-family: monospace;
+  font-weight: bolder;
+  --orange: #ff7926;
+  --white: #cdd6d0;
+  --black: #1f271b;
+  --canvaSize: 0.75;
+}
+
+*,
+::before,
+::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--white);
+  overflow: hidden;
+}
+
+section {
+  height: 100vh;
+  width: 100vw;
+  display: block;
+}
+section.maze {
+  display: none;
+}
+
+.fade-out {
+  z-index: 10;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 200vh;
+  width: 200vw;
+  background: #000;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.fade-out.active {
+  opacity: 1;
+}
+
+h1 {
+  color: var(--orange);
+  font-size: 4rem;
+  margin: 1rem;
+  margin-right: 0;
+}
+
+p {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--black);
+  font-size: 2rem;
+  gap: 1rem;
+}
+p > span.text {
+  margin: 1rem;
+}
+
+canvas {
+  width: 100vw;
+  background-color: var(--white);
+}
+
+ul {
+  list-style-type: none;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5rem;
+  gap: 1.5rem;
+}
+
+li {
+  padding: 0.5rem 1rem;
+  max-width: 15rem;
+  border-radius: 1rem;
+  box-shadow: 5px 5px 10px #aeb6b1, -5px -5px 10px #ecf6ef;
+  height: -webkit-min-content;
+  height: -moz-min-content;
+  height: min-content;
+}
+li:hover, li.hovered {
+  box-shadow: inset 5px 5px 10px #aeb6b1, inset -5px -5px 10px #ecf6ef;
+}
+li a {
+  color: var(--black);
+  text-decoration: none;
+}
+li small {
+  font-size: 0.5rem;
+  line-height: 0.8rem;
+  display: inline-block;
+}
+
+.container {
+  position: relative;
+}
+.container .player {
+  display: block;
+  position: absolute;
+  height: 3.7037037037vw;
+  width: 3.7037037037vw;
+  left: 96.2962962963vw;
+  top: 59.2592592593vw;
+  background: blue;
+  z-index: -1;
+  transition: transform 0.5s ease-in;
+}
+.container.ended .player {
+  transform: translateX(50vw);
+}
+
+.maze .container {
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.maze .container .player {
+  height: 3.5714285714vw;
+  width: 3.5714285714vw;
+  top: 96.4285714286vw;
+}
+.maze .container.ended .player {
+  transform: translateY(70vw);
+}
+.maze .container.left .player {
+  left: 3.5714285714vw;
+}
+.maze .container.middle .player {
+  left: 50vw;
+}
+.maze .container.right .player {
+  left: 92.8571428571vw;
+}
+
+@media (min-width: 350px) {
+  canvas.fourOfour {
+    width: calc(54rem * var(--canvaSize));
+    border-radius: calc(1rem * var(--canvaSize));
+  }
+  canvas.maze {
+    width: calc(56rem * var(--canvaSize));
+    border-radius: calc(1rem * var(--canvaSize));
+  }
+  .container .player {
+    height: calc(2rem * var(--canvaSize));
+    width: calc(2rem * var(--canvaSize));
+    left: calc(52rem * var(--canvaSize));
+    top: calc(32rem * var(--canvaSize));
+  }
+  .maze .container .player {
+    height: calc(2rem * var(--canvaSize));
+    width: calc(2rem * var(--canvaSize));
+    top: calc(54rem * var(--canvaSize));
+    transition: transform 0.5s ease-in;
+  }
+  .maze .container.left .player {
+    left: calc(2rem * var(--canvaSize));
+  }
+  .maze .container.middle .player {
+    left: calc(28rem * var(--canvaSize));
+  }
+  .maze .container.right .player {
+    left: calc(52rem * var(--canvaSize));
+  }
+  .maze .container ul {
+    padding: 1.5rem 0;
+  }
+}
+@media (min-width: 500px) {
+  .maze .container {
+    display: inline-flex;
+  }
+  .maze .container ul {
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem;
+  }
+  .maze .container li {
+    width: -webkit-max-content;
+    width: -moz-max-content;
+    width: max-content;
+  }
+  .maze .container.ended .player {
+    transform: translateX(70vw);
+  }
+  .maze .container.high .player {
+    top: calc(4rem * var(--canvaSize));
+  }
+  .maze .container.middle .player {
+    top: calc(28rem * var(--canvaSize));
+  }
+  .maze .container.low .player {
+    top: calc(50rem * var(--canvaSize));
+  }
+}
+@media (min-width: 750px) {
+  :root {
+    --canvaSize: 1;
+  }
+  h1 {
+    font-size: 5rem;
+  }
+  p {
+    font-size: 2.75rem;
+  }
+  .maze .container ul {
+    font-size: 2rem;
+    padding: 2rem;
+  }
+  .maze .container ul li {
+    max-width: 20rem;
+  }
+  .maze .container ul small {
+    font-size: 1rem;
+    line-height: 1rem;
+  }
+}
+@media (min-width: 1000px) {
+  :root {
+    --canvaSize: 1.2;
+  }
+  h1 {
+    font-size: 6rem;
+  }
+  p {
+    font-size: 3rem;
+  }
+  .maze .container ul {
+    font-size: 3rem;
+    padding: 3rem;
+  }
+  .maze .container ul li {
+    max-width: 25rem;
+    border-radius: 2rem;
+  }
+  .maze .container ul small {
+    font-size: 1.25rem;
+    line-height: 1.25rem;
+  }
+}
+@media (min-width: 1200px) {
+  :root {
+    --canvaSize: 1.5;
+  }
+  h1 {
+    font-size: 7rem;
+  }
+  p {
+    font-size: 4rem;
+  }
+  .maze .container ul {
+    font-size: 4rem;
+    padding: 4rem;
+  }
+  .maze .container ul li {
+    max-width: 30rem;
+  }
+  .maze .container ul small {
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+  }
+}
+@media (min-width: 2000px) {
+  :root {
+    --canvaSize: 3;
+  }
+  h1 {
+    font-size: 14rem;
+  }
+  p {
+    font-size: 10rem;
+  }
+  .maze .container ul {
+    font-size: 10rem;
+    padding: 7rem;
+  }
+  .maze .container ul li {
+    max-width: 75rem;
+    border-radius: 3rem;
+  }
+  .maze .container ul small {
+    font-size: 3.5rem;
+    line-height: 3.5rem;
+  }
+}
+/*
+.quatre-cent-quatre p {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  width: max-content;
+  transform: translate(-50%, -50%);
+}
+.container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+.maze .container {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  display: flex;
+  width: max-content;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  transform: translate(-50%, -50%);
+}
+ul {
+  list-style-type: none;
+  font-size: 3rem;
+  display: flex;
+  height: calc(56rem * var(--canvaSize));
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rem 0;
+  overflow: hidden;
+  padding: 1.5rem;
+}
+li {
+  padding: 1.5rem 3rem;
+  max-width: 35rem;
+  border-radius: 2rem;
+  box-shadow: 5px 5px 10px #aeb6b1, -5px -5px 10px #ecf6ef;
+}
+
+li:hover,
+li.hovered {
+  box-shadow: inset 5px 5px 10px #aeb6b1, inset -5px -5px 10px #ecf6ef;
+}
+
+li a {
+  color: var(--black);
+  text-decoration: none;
+}
+li small {
+  font-size: 1.5rem;
+  line-height: 1.8rem;
+  display: inline-block;
+}
+.container .player {
+  display: block;
+  position: absolute;
+  height: calc(2rem * var(--canvaSize));
+  width: calc(2rem * var(--canvaSize));
+  left: calc(52rem * var(--canvaSize));
+  top: calc(32rem * var(--canvaSize));
+  background: blue;
+  z-index: -1;
+  transition: transform 0.75s ease-in;
+}
+.container.ended .player {
+  transform: translateX(50vw);
+}
+.maze .container.ended .player {
+  transform: translateX(70vw);
+}
+.maze .container .player {
+  transition: transform 0.5s ease-in;
+}
+.container.high .player {
+  top: calc(4rem * var(--canvaSize));
+}
+.container.middle .player {
+  top: calc(28rem * var(--canvaSize));
+}
+.container.low .player {
+  top: calc(50rem * var(--canvaSize));
+}
+canvas {
+  width: calc(54rem * var(--canvaSize));
+  height: calc(38rem * var(--canvaSize));
+  border-radius: 2.5rem;
+  background: var(--white);
+}
+.maze canvas {
+  width: calc(56rem * var(--canvaSize));
+  height: calc(56rem * var(--canvaSize));
+}
+
+@media (max-width: 1275px) {
+  :root {
+    --canvaSize: 1.2;
+  }
+  h1 {
+    font-size: 7rem;
+  }
+  p {
+    font-size: 4rem;
+  }
+}
+@media (max-width: 1000px) {
+  :root {
+    --canvaSize: 1;
+  }
+  h1 {
+    font-size: 5.5rem;
+  }
+  p {
+    font-size: 3rem;
+  }
+}
+@media (max-width: 600px) {
+  :root {
+    --canvaSize: calc(100vw / 54rem);
+  }
+  canvas {
+    width: 100vw;
+  }
+  .quatre-cent-quatre p {
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
+    display: inline;
+  }
+  h1 {
+    font-size: 5.5rem;
+  }
+  p {
+    font-size: 3rem;
+  }
+} *//*# sourceMappingURL=style.css.map */
